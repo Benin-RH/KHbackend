@@ -1,13 +1,13 @@
 const express=require("express");
 const Router=express.Router();
-const staff=require("./Staff/staffControler");
+const staff=require('./Staff/staffControler')
+const student=require('./Student/studentController')
 
 
 /* staff */
-Router.post("/staffRegistration",staff.addstaff)
+Router.post("/staffRegistration",staff.staffRegistration)
 
 /* student */
-const student=require('./Student/studentController')
 Router.post('/studentRegistration',student.studentRegistration)
 
 

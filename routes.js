@@ -9,6 +9,7 @@ Router.post("/staffRegistration",staff.staffRegistration)
 
 /* student */
 Router.post('/studentRegistration',student.studentRegistration)
+Router.post('/studenLogin',student.studentLogin)
 
 
 module.exports=Router

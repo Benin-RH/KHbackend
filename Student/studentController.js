@@ -29,33 +29,40 @@ const studentRegistration = async (req, res) => {
 };
 
 const studentLogin = (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ msg: "All fields are required" });
+  const { email, password } = req.body; // Extract email and password
+  const pass = parseInt(password);
+
+  if (!email || !pass) {
+    return res.status(400).json({ message: "All fields are required" });
   }
-  const user = studentSchema.findOne({ email })
-    user
+
+  studentSchema.findOne({ email })
     .then((user) => {
-      let pass = user?user.password:'';
       if (!user) {
-        res.status(404).json({
-          msg: "User not found",
-          data: user,
-        });
-      } else if (pass !== password) {
-        res.json({
-          msg: "password incorrect try again",
-        });
-      } else if (pass === password) {
-        res.json({
-          msg: "Logged in successfully",
+        return res.status(404).json({
+          message: "User not found",
           data: user,
         });
       }
+
+      if (user.password !== pass) {
+        return res.status(400).json({
+          message: "Password incorrect",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Logged in successfully",
+        data:{
+          studentName:user.studentName,
+          contact:user.contact,
+          email:user.email,
+        }
+      });
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({msg:'server Error'})
+      res.status(500).json({ msg: "Server error" });
     });
 };
 

@@ -6,6 +6,7 @@ const student=require('./Student/studentController')
 
 /* staff */
 Router.post("/staffRegistration",staff.staffRegistration)
+Router.post("/forgetPassword",staff.forgetPassword)
 
 /* student */
 Router.post('/studentRegistration',student.studentRegistration)

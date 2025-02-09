@@ -30,6 +30,7 @@ const staffRegistration = async (req, res) => {
   }
 };
 
+
 module.exports = {
   staffRegistration,
 };

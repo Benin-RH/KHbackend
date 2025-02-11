@@ -12,7 +12,8 @@ Router.post("/staffRegistration", staff.staffRegistration);
 Router.post("/studentRegistration", student.studentRegistration);
 Router.post("/studentLogin", student.studentLogin);
 Router.post("/student",student.findStudent);
-Router.post("/studentForgetPassword",student.studentChangePassword);
+Router.post("/studentCheckMail",student.studentCheckMail);
+Router.post("/changePassword",student.setNewPassword);
 
 /*Admin*/
 Router.post('/AdminLogin',Admin.loginAdmin)

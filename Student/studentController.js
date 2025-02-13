@@ -1,6 +1,6 @@
 const studentSchema = require("./studentSchema");
 
-const studentRegistration = async (req, res) => {
+const studentRegistration = async (req, res) => {  
   const { userName, email, password, phoneNumber } = req.body;
 
   if (!userName || !email || !password || !phoneNumber) {
@@ -138,7 +138,8 @@ const setNewPassword=(req,res)=>{
   studentSchema.findOneAndUpdate({email,password})
   .then((data)=>{
     return res.status(200).json({
-      data:data
+      data:data,
+      message:"password changed successfully"
     })
   })
   .catch((err)=>{

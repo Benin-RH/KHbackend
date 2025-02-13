@@ -29,7 +29,7 @@ const studentRegistration = async (req, res) => {
 };
 
 const studentLogin = (req, res) => {
-  const { email, password } = req.body; // Extract email and password
+  const { email, password } = req.body; 
   const pass = parseInt(password);
 
   if (!email || !pass) {
@@ -90,44 +90,68 @@ const findStudent = (req, res) => {
     });
 };
 
-const studentChangePassword = (req, res) => {
-  const { email,pass } = req.body;
-  if (!email || !pass) {
+const studentCheckMail = (req, res) => {
+  const { email } = req.body;
+  if (!email) {
     return res.status(400).json({
-      message: "every fields are required",
+      message: "please enter your email",
     });
   }
   studentSchema
     .findOne({ email })
-    .then((response)=>{
-      if(!response){
+    .then((response) => {
+      if (!response) {
         return res.status(400).json({
-          message:'user not found'
-        })
+          message: "user not found",
+        });
       }
-      else{
-          return response        
-      }
+      return res.status(200).json({
+        message: "success",
+        data: true,
+      });
     })
-    .then(()=>{
-      studentSchema.findOneAndUpdate({email:req.body.email},{password:req.body.pass})
-      .then((response)=>{
-          return res.status(200).json({
-            message:'password succesfully changed',
-            data:response
-          })
-      })
-    })
-    .catch((err)=>{
+    .catch((err) => {
       res.status(500).json({
-        messsge:'error occured'
-      })
-    })
+        messsge: "error occured",
+      });
+    });
 };
+
+const setNewPassword=(req,res)=>{
+  const {email,password}=req.body
+  if(!password){
+    return res.status(400).json({
+      message:'Please Enter Your Password'
+    })
+  }
+  const pass=password.toString().split('').length  
+  if(pass<6){
+    return res.status(400).json({
+      message:'your password length should be atleast 6'
+    })
+  }
+  if(isNaN(password)){
+    return res.status(400).json({
+      message:'your password should be a number'
+    })
+  }
+  studentSchema.findOneAndUpdate({email,password})
+  .then((data)=>{
+    return res.status(200).json({
+      data:data
+    })
+  })
+  .catch((err)=>{
+    res.status(500).json({
+      messsge: "error occured",
+    });
+  })
+}
 
 module.exports = {
   studentRegistration,
   studentLogin,
   findStudent,
-  studentChangePassword,
+  studentCheckMail,
+  setNewPassword
 };

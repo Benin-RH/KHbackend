@@ -7,6 +7,7 @@ const Admin=require('./Admin/AdminControler')
 
 /* staff */
 Router.post("/staffRegistration", staff.staffRegistration);
+Router.post("/staffLogin", staff.staffLogin);
 
 /* student */
 Router.post("/studentRegistration", student.studentRegistration);

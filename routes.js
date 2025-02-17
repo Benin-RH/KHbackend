@@ -16,7 +16,7 @@ Router.post("/studentCheckMail",student.studentCheckMail);
 Router.post("/changePassword",student.setNewPassword);
 
 /*Admin*/
-Router.post('/AdminLogin',Admin.loginAdmin)
+Router.post('/AdminLogin',Admin.loginAdmin);
 
 module.exports=Router
 

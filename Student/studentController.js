@@ -2,7 +2,8 @@ const studentSchema = require("./studentSchema");
 
 const studentRegistration = async (req, res) => {  
   const { userName, email, password, phoneNumber } = req.body;
-
+  console.log(req.body);
+  
   if (!userName || !email || !password || !phoneNumber) {
     return res.status(400).json({ message: "All fields are required." });
   }
@@ -32,8 +33,12 @@ const studentLogin = (req, res) => {
   const { email, password } = req.body; 
   const pass = parseInt(password);
 
-  if (!email || !pass) {
+  if (!email || !password) {
     return res.status(400).json({ message: "All fields are required" });
+  }
+
+  if(!/^\S+@\S+\.\S+$/.test(email)){
+    return res.status(400).json({ message: "Enter Valid Email Address" });
   }
 
   studentSchema

@@ -7,10 +7,11 @@ const staffRegistration = (req, res) => {
   if (!Name || !email || !Password || !Contact) {
     return res.status(400).json({ message: "All fields are required." });
   }
+  if(!/^\S+@\S+\.\S+$/.test(email)){
+    return res.status(400).json({ message: "Enter Valid Email Address" });
+  }
   staffschema.findOne({ email })
     .then((existingStaff) => {
-
-      console.log(existingStaff);
       if (existingStaff) {
         return res.status(400).json({ message: "Email already exists" });
       }
@@ -33,7 +34,7 @@ const staffRegistration = (req, res) => {
         .then((response) => {
           return res.status(200).json({
             data: response,
-            message: "Registration success",
+            message: "successfully Registered",
           });
         })
         .catch((err) => {
@@ -50,6 +51,47 @@ const staffRegistration = (req, res) => {
     });
 };
 
+const staffLogin = (req, res) => {
+  const { Email:email, Password } = req.body; 
+  const pass = parseInt(Password);
+
+  if (!email || !Password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  if(!/^\S+@\S+\.\S+$/.test(email)){
+    return res.status(400).json({ message: "Enter Valid Email Address" });
+  }
+
+  staffschema
+    .findOne({ email })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({
+          message: "User not found",
+          data: user,
+        });
+      }
+
+      if (user.password !== pass) {
+        return res.status(400).json({
+          message: "Password incorrect",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Logged in successfully",
+        data: user,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ msg: "Server error" });
+    });
+};
+
+
 module.exports = {
   staffRegistration,
+  staffLogin,
 };

@@ -144,7 +144,7 @@ const setNewPassword=(req,res)=>{
   .then((data)=>{
     return res.status(200).json({
       data:data,
-      message:"password changed successfully"
+      message:"changed successfully"
     })
   })
   .catch((err)=>{

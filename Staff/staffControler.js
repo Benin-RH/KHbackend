@@ -53,6 +53,7 @@ const staffRegistration = (req, res) => {
 
 const staffLogin = (req, res) => {
   const { Email:email, Password } = req.body; 
+
   const pass = parseInt(Password);  
 
   if (!email || !Password) {

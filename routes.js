@@ -8,8 +8,8 @@ const Admin=require('./Admin/AdminControler')
 /* staff */
 Router.post("/staffRegistration", staff.staffRegistration);
 Router.post("/staffLogin", staff.staffLogin);
-Router.post("/studentCheckMail",student.studentCheckMail);
-Router.post("/staffChangePassword",student.setNewPassword);
+Router.post("/staffCheckMail",staff.staffCheckMail);
+Router.post("/staffChangePassword",staff.setNewPassword);
 Router.post("/staff",staff.findStaff);
 
 

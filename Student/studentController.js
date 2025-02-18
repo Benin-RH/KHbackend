@@ -105,6 +105,8 @@ const studentCheckMail = (req, res) => {
   studentSchema
     .findOne({ email })
     .then((response) => {
+      console.log(response);
+      
       if (!response) {
         return res.status(400).json({
           message: "user not found",
@@ -123,7 +125,6 @@ const studentCheckMail = (req, res) => {
 };
 
 const setNewPassword=(req,res)=>{
-  const {email,password}=req.body
   if(!password){
     return res.status(400).json({
       message:'Please Enter Your Password'
@@ -132,12 +133,12 @@ const setNewPassword=(req,res)=>{
   const pass=password.toString().split('').length  
   if(pass<6){
     return res.status(400).json({
-      message:'your password length should be atleast 6'
+      message:'password length should be atleast 6'
     })
   }
   if(isNaN(password)){
     return res.status(400).json({
-      message:'your password should be a number'
+      message:'password should be a number'
     })
   }
   studentSchema.findOneAndUpdate({email,password})

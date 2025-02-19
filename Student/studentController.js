@@ -99,7 +99,7 @@ const studentCheckMail = (req, res) => {
   const { email } = req.body;
   if (!email) {
     return res.status(400).json({
-      message: "please enter your email",
+      message: "Enter your email",
     });
   }
   studentSchema
@@ -127,7 +127,7 @@ const studentCheckMail = (req, res) => {
 const setNewPassword=(req,res)=>{
   if(!password){
     return res.status(400).json({
-      message:'Please Enter Your Password'
+      message:'Enter Your Password'
     })
   }
   const pass=password.toString().split('').length  

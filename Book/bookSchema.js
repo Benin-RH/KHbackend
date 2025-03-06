@@ -6,7 +6,7 @@ const bookSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      unique: true, // This already creates an index, no need to call schema.index()
+      unique: true,
       collation: { locale: "en", strength: 2 }, // Case-insensitive uniqueness
     },
     authorName: {

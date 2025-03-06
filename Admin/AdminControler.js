@@ -5,9 +5,6 @@ const admins = [
 ];
 const loginAdmin = async (req, res) => {
     const { email, password } = req.body;
-    console.log("Received email:", email);
-    console.log("Received password:", password);
-
     const admin = admins.find((admin) => admin.email === email);
 
     if (!admin) {

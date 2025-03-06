@@ -137,6 +137,28 @@ const addBook = async (req, res) => {
   }
 };
 
+const getBook=(req,res)=>{
+  const id=req.params.id
+  if(!id){
+    return res.status(400).json({
+      message:'id not found'
+    })
+  }
+  Book.findById(id)
+  .then((data)=>{
+    return res.status(201).json({
+      data,
+      message:'success'
+    })
+  })
+  .catch((err)=>{
+    console.log(err);
+    return res.status(500).json({
+      message:'Servor error'
+    })
+  })
+}
+
 const deleteBook = async (req, res) => {
   try {
     const { id } = req.params;
@@ -165,4 +187,4 @@ const deleteBook = async (req, res) => {
   }
 };
 
-module.exports = { upload, addBook, deleteBook,getAllBooks };
+module.exports = { upload, addBook, deleteBook,getAllBooks,getBook};

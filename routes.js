@@ -28,6 +28,7 @@ Router.post('/AdminLogin',Admin.loginAdmin)
 Router.post('/addBook',Book.upload,Book.addBook)
 Router.get('/getAllBooks',Book.getAllBooks)
 Router.delete('/deleteBook/:id',Book.deleteBook)
+Router.post('/getBook/:id',Book.getBook)
 
 
 module.exports=Router

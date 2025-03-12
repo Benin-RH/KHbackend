@@ -5,6 +5,7 @@ const staff=require('./Staff/staffControler')
 const student=require('./Student/studentController')
 const Admin=require('./Admin/AdminControler')
 const Book=require('./Book/bookController')
+const favouriteBook=require('./Favourite/FavouriteController')
 
 /* staff */
 Router.post("/staffRegistration", staff.staffRegistration);
@@ -29,6 +30,10 @@ Router.post('/addBook',Book.upload,Book.addBook)
 Router.get('/getAllBooks',Book.getAllBooks)
 Router.delete('/deleteBook/:id',Book.deleteBook)
 Router.post('/getBook/:id',Book.getBook)
+
+/* fav book */
+Router.post('/addUserFavouriteBooks',favouriteBook.addUserFavouriteBooks)
+Router.post('/getAllUserFavouriteBooks',favouriteBook.getUserFavouriteBooks)
 
 
 module.exports=Router

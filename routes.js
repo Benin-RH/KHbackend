@@ -34,6 +34,7 @@ Router.post('/getBook/:id',Book.getBook)
 /* fav book */
 Router.post('/addUserFavouriteBooks',favouriteBook.addUserFavouriteBooks)
 Router.post('/getAllUserFavouriteBooks',favouriteBook.getUserFavouriteBooks)
+Router.post('/removeFavouriteBook',favouriteBook.removeFavouriteBook)
 
 
 module.exports=Router

@@ -187,4 +187,51 @@ const deleteBook = async (req, res) => {
   }
 };
 
-module.exports = { upload, addBook, deleteBook,getAllBooks,getBook};
+
+const editBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+    const book = await Book.findById(id);
+
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    // Handle Image and File Update
+    if (req.files) {
+      // Ensure req.files exists and contains image/file
+      if (req.files.image) {
+        const newImagePath = `uploads/images/${req.files.image.name}`;
+        fs.unlink(path.join(__dirname, "..", book.imagePath), (err) => {
+          if (err) console.error("Error deleting old image:", err);
+        });
+        req.files.image.mv(path.join(__dirname, "..", newImagePath));
+        updates.imagePath = newImagePath;
+      }
+
+      if (req.files.file) {
+        const newFilePath = `uploads/files/${req.files.file.name}`;
+        fs.unlink(path.join(__dirname, "..", book.filePath), (err) => {
+          if (err) console.error("Error deleting old file:", err);
+        });
+        req.files.file.mv(path.join(__dirname, "..", newFilePath));
+        updates.filePath = newFilePath;
+      }
+    }
+
+    // Update the book record in the database
+    const updatedBook = await Book.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      message: "Book updated successfully",
+      updatedBook,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+module.exports = { upload, addBook, deleteBook,getAllBooks,getBook,editBook};

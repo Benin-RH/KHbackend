@@ -38,15 +38,15 @@ const lendBook = async (req, res) => {
       }
     }
 
-    const lentBook = new LentBook({
+    const lentedBook = new LentBook({
       bookId,
       userId,
     });
 
-    await lentBook.save();
+    await lentedBook.save();
     return res
       .status(201)
-      .json({ message: "Book lent successfully!", lentBook });
+      .json({ message: "Book lent successfully!", lentedBook });
   } catch (error) {
     return res.status(500).json({ message: "Error lending book", error });
   }

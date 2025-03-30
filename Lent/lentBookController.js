@@ -1,7 +1,7 @@
 const LentBook = require("./lentSchema.js");
 const Book = require("../Book/bookSchema.js");
 const Staff = require("../Staff/staffschema.js");
-const student = require("../Student/studentSchema.js");
+const Student = require("../Student/studentSchema.js");
 
 // Lend a Book
 const lendBook = async (req, res) => {
@@ -9,16 +9,12 @@ const lendBook = async (req, res) => {
   try {
     const existingLentBook = await LentBook.findOne({ bookId });
     if (existingLentBook) {
-      return res
-        .status(400)
-        .json({ message: "This book is already lent out." });
+      return res.status(400).json({ message: "This book is already lent out." });
     }
 
     const existingUserLentBook = await LentBook.findOne({ userId });
     if (existingUserLentBook) {
-      return res
-        .status(400)
-        .json({ message: "This user has already lent a book." });
+      return res.status(400).json({ message: "This user has already lent a book." });
     }
 
     const book = await Book.findById(bookId);
@@ -26,13 +22,17 @@ const lendBook = async (req, res) => {
       return res.status(404).json({ message: "Book not found." });
     }
 
+    // Mark the book as borrowed
+    book.borrowed = true;
+    await book.save();
+
     if (userType === "staff") {
       const findStaff = await Staff.findById(userId);
       if (!findStaff) {
         return res.status(404).json({ message: "User not found." });
       }
     } else if (userType === "student") {
-      const findStudent = await student.findById(userId);
+      const findStudent = await Student.findById(userId);
       if (!findStudent) {
         return res.status(404).json({ message: "User not found." });
       }
@@ -55,9 +55,7 @@ const lendBook = async (req, res) => {
 // Return a Book
 const returnBook = async (req, res) => {
   const { bookId, userId } = req.body;
-
   try {
-    // Find the lent book record
     const lentBook = await LentBook.findOne({ bookId, userId });
 
     if (!lentBook) {
@@ -86,8 +84,29 @@ const getAllLentBooks = async (req, res) => {
   }
 };
 
+const getLentedBookByUser = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        
+        if (!userId) {
+            return res.status(400).json({ message: "User ID is required" });
+        }
+
+        const lentedBooks = await LentBook.find({ userId }); 
+
+        if (!lentedBooks.length) {
+            return res.status(404).json({ message: "No lented books found for this user" });
+        }
+        res.status(200).json({ books: lentedBooks });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+
 module.exports = {
   lendBook,
   returnBook,
   getAllLentBooks,
+  getLentedBookByUser
 };

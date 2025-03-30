@@ -41,15 +41,14 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json()); // Replace body-parser.json()
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); 
+// app.use(express.urlencoded({ extended: true }));
 
 // Enable file upload middleware
 app.use(fileUpload()); 
 
 // Serve static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 app.use("/", routes);
 
 app.listen(port, () => {

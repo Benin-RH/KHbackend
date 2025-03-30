@@ -2,6 +2,7 @@ const LentBook = require("./lentSchema.js");
 const Book = require("../Book/bookSchema.js");
 const Staff = require("../Staff/staffschema.js");
 const Student = require("../Student/studentSchema.js");
+const mongoose = require("mongoose");
 
 // Lend a Book
 const lendBook = async (req, res) => {
@@ -9,12 +10,16 @@ const lendBook = async (req, res) => {
   try {
     const existingLentBook = await LentBook.findOne({ bookId });
     if (existingLentBook) {
-      return res.status(400).json({ message: "This book is already lent out." });
+      return res
+        .status(400)
+        .json({ message: "This book is already lent out." });
     }
 
     const existingUserLentBook = await LentBook.findOne({ userId });
     if (existingUserLentBook) {
-      return res.status(400).json({ message: "This user has already lent a book." });
+      return res
+        .status(400)
+        .json({ message: "This user has already lent a book." });
     }
 
     const book = await Book.findById(bookId);
@@ -44,7 +49,9 @@ const lendBook = async (req, res) => {
     });
 
     await lentedBook.save();
-    return res.status(201).json({ message: "Book lent successfully!", lentedBook });
+    return res
+      .status(201)
+      .json({ message: "Book lent successfully!", lentedBook });
   } catch (error) {
     return res.status(500).json({ message: "Error lending book", error });
   }
@@ -62,7 +69,11 @@ const returnBook = async (req, res) => {
         .json({ message: "No such lent book record found." });
     }
 
-    // Remove the lent book record
+    if (lendBook) {
+      const book = await Book.findById(lentBook.bookId);
+      book.borrowed = false;
+      await book.save();
+    }
     await LentBook.deleteOne({ _id: lentBook._id });
     return res.status(200).json({ message: "Book returned successfully!" });
   } catch (error) {
@@ -83,28 +94,29 @@ const getAllLentBooks = async (req, res) => {
 };
 
 const getLentedBookByUser = async (req, res) => {
-    try {
-        const { userId } = req.params;
-        
-        if (!userId) {
-            return res.status(400).json({ message: "User ID is required" });
-        }
-
-        const lentedBooks = await LentBook.find({ userId }); 
-
-        if (!lentedBooks.length) {
-            return res.status(404).json({ message: "No lented books found for this user" });
-        }
-        res.status(200).json({ books: lentedBooks });
-    } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+  try {
+    let { userId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid User ID" });
     }
-};
 
+    const lentedBook = await LentBook.find({ userId });
+
+    if (!lentedBook.length) {
+      return res
+        .status(404)
+        .json({ message: "No lented books found for this user" });
+    }
+
+    res.status(200).json({ book: lentedBook });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
 module.exports = {
   lendBook,
   returnBook,
   getAllLentBooks,
-  getLentedBookByUser
+  getLentedBookByUser,
 };

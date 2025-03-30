@@ -44,7 +44,9 @@ const lendBook = async (req, res) => {
     });
 
     await lentedBook.save();
-    return res.status(201).json({ message: "Book lent successfully!", lentedBook });
+    return res
+      .status(201)
+      .json({ message: "Book lent successfully!", lentedBook });
   } catch (error) {
     return res.status(500).json({ message: "Error lending book", error });
   }

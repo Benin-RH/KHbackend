@@ -3,7 +3,6 @@ const express=require("express");
 const Router=express.Router();
 const staff=require('./Staff/staffControler')
 const student=require('./Student/studentController')
-const Admin=require('./Admin/AdminControler')
 const Book=require('./Book/bookController')
 const favouriteBook=require('./Favourite/FavouriteController')
 const lentedBook=require('./Lent/lentBookController')
@@ -23,14 +22,13 @@ Router.post("/student",student.findStudent);
 Router.post("/studentCheckMail",student.studentCheckMail);
 Router.post("/studentChangePassword",student.setNewPassword);
 
-/*Admin*/
-Router.post('/AdminLogin',Admin.loginAdmin)
 
 /* Book */
 Router.post('/addBook',Book.upload,Book.addBook)
 Router.get('/getAllBooks',Book.getAllBooks)
 Router.delete('/deleteBook/:id',Book.deleteBook)
 Router.post('/getBook/:id',Book.getBook)
+Router.put('/editBook/:id',Book.editBook)
 
 /* fav book */
 Router.post('/addUserFavouriteBooks',favouriteBook.addUserFavouriteBooks)

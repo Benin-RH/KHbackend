@@ -30,6 +30,7 @@ Router.delete('/deleteBook/:id',Book.deleteBook)
 Router.post('/getBook/:id',Book.getBook)
 Router.post('/editBook/:id',Book.editBook)
 
+
 /* fav book */
 Router.post('/addUserFavouriteBooks',favouriteBook.addUserFavouriteBooks)
 Router.post('/getAllUserFavouriteBooks',favouriteBook.getUserFavouriteBooks)
@@ -37,6 +38,8 @@ Router.post('/removeFavouriteBook',favouriteBook.removeFavouriteBook)
 
 /* lent book */
 Router.post('/lentedBook',lentedBook.lendBook)
+Router.post('/lentedBook/:userId',lentedBook.getLentedBookByUser)
+Router.post('/returnBook',lentedBook.returnBook)
 
 module.exports=Router
 

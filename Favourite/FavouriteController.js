@@ -33,11 +33,18 @@ const addUserFavouriteBooks = async (req, res) => {
         .json({ message: "Invalid action. Use 'add' or 'remove'." });
     }
     await userFavorites.save();
-
-    return res.status(200).json({
-      message: "Favorite books updated successfully.",
+    if(action === 'add'){
+      return res.status(200).json({
+      message: "Book added to your Favourites",
       favouriteBooks: userFavorites.bookIds,
     });
+    }
+    else if(action === 'remove'){
+      return res.status(200).json({
+      message: "Book removed from your Favourite",
+      favouriteBooks: userFavorites.bookIds,
+    });
+    }
   } catch (error) {
     console.error("Error updating favorite books:", error);
     return res.status(500).json({ message: "Internal server error." });

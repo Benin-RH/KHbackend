@@ -125,6 +125,7 @@ const studentCheckMail = (req, res) => {
 };
 
 const setNewPassword=(req,res)=>{
+  const{email,password}=req.body
   if(!password){
     return res.status(400).json({
       message:'Enter Your Password'

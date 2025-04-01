@@ -20,6 +20,7 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 // Serve static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// Use routes
 app.use("/", routes);
 
 app.listen(port, () => {

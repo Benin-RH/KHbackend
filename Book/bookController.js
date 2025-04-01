@@ -192,36 +192,44 @@ const deleteBook = async (req, res) => {
 /* const editBook = async (req, res) => {
   try {
     const { id } = req.params;
-    const updates = req.body;
+    const updates = { ...req.body };
     const book = await Book.findById(id);
 
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
 
-    // Handle Image and File Update
-    if (req.files) {
-      // Ensure req.files exists and contains image/file
-      if (req.files.image) {
-        const newImagePath = `uploads/images/${req.files.image.name}`;
+    console.log("Received files:", req.files);
+
+    // Handle Image Upload
+    if (req.files?.image) {
+      const newImagePath = req.files.image[0].path; // Multer saves path
+      
+      // Delete old image if it exists
+      if (book.imagePath) {
         fs.unlink(path.join(__dirname, "..", book.imagePath), (err) => {
           if (err) console.error("Error deleting old image:", err);
         });
-        req.files.image.mv(path.join(__dirname, "..", newImagePath));
-        updates.imagePath = newImagePath;
       }
 
-      if (req.files.file) {
-        const newFilePath = `uploads/files/${req.files.file.name}`;
+      updates.imagePath = newImagePath;
+    }
+
+    // Handle File Upload (PDF)
+    if (req.files?.file) {
+      const newFilePath = req.files.file[0].path;
+
+      // Delete old file if it exists
+      if (book.filePath) {
         fs.unlink(path.join(__dirname, "..", book.filePath), (err) => {
           if (err) console.error("Error deleting old file:", err);
         });
-        req.files.file.mv(path.join(__dirname, "..", newFilePath));
-        updates.filePath = newFilePath;
       }
+
+      updates.filePath = newFilePath;
     }
 
-    // Update the book record in the database
+    // Update book in database
     const updatedBook = await Book.findByIdAndUpdate(id, updates, {
       new: true,
       runValidators: true,
@@ -280,4 +288,5 @@ const editBook = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 module.exports = { upload, addBook, deleteBook,getAllBooks,getBook,editBook};

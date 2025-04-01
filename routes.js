@@ -28,7 +28,8 @@ Router.post('/addBook',Book.upload,Book.addBook)
 Router.get('/getAllBooks',Book.getAllBooks)
 Router.delete('/deleteBook/:id',Book.deleteBook)
 Router.post('/getBook/:id',Book.getBook)
-Router.put('/editBook/:id',Book.editBook)
+Router.post('/editBook/:id',Book.editBook)
+
 
 /* fav book */
 Router.post('/addUserFavouriteBooks',favouriteBook.addUserFavouriteBooks)

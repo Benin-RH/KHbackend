@@ -2,27 +2,20 @@ const express = require("express");
 const cors = require("cors");
 const routes = require("./routes.js");
 const db = require("./dbConnection.js");
-const fileUpload = require("express-fileupload");
 const path = require("path");
-const bodyParser = require("body-parser");
 
 const app = express();
 const port = 5001;
 
 // CORS settings
-app.use(fileUpload());
 const corsOptions = {
   origin: "http://localhost:3000",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 };
 
 app.use(cors(corsOptions));
-
-// Body parsing middleware
-app.use(bodyParser.json()); // Parse JSON request bodies
-app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded request bodies
-
-// Enable file upload middleware
+app.use(express.json({ limit: "50mb" })); // Replace body-parser.json()
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 // Serve static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

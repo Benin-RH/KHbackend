@@ -66,7 +66,7 @@ const addBook = async (req, res) => {
     if (!req.files || !req.files.imageFile || !req.files.bookFile) {
       return res
         .status(400)
-        .json({ message: "Both image and book file are required!" });
+        .json({ message: "Both image and book files are required!" });
     }
 
     const { bookName, authorName, description, category } = req.body;

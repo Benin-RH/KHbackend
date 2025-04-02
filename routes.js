@@ -1,6 +1,11 @@
 
 const express=require("express");
 const Router=express.Router();
+const multer = require("multer");
+
+const upload = multer({ dest: "uploads/" });
+
+
 const staff=require('./Staff/staffControler')
 const student=require('./Student/studentController')
 const Book=require('./Book/bookController')
@@ -28,7 +33,7 @@ Router.post('/addBook',Book.upload,Book.addBook)
 Router.get('/getAllBooks',Book.getAllBooks)
 Router.delete('/deleteBook/:id',Book.deleteBook)
 Router.post('/getBook/:id',Book.getBook)
-Router.post('/editBook/:id',Book.editBook)
+Router.post("/editBook/:id", upload.fields([{ name: "imageFile" }, { name: "bookFile" }]), Book.editBook);
 
 /* fav book */
 Router.post('/addUserFavouriteBooks',favouriteBook.addUserFavouriteBooks)
@@ -37,6 +42,8 @@ Router.post('/removeFavouriteBook',favouriteBook.removeFavouriteBook)
 
 /* lent book */
 Router.post('/lentedBook',lentedBook.lendBook)
+Router.post('/lentedBook/:userId',lentedBook.getLentedBookByUser)
+Router.post('/returnBook',lentedBook.returnBook)
 
 module.exports=Router
 

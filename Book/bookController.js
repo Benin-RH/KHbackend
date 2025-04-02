@@ -58,6 +58,7 @@ const getAllBooks= async(req,res)=>{
 }
 
 const addBook = async (req, res) => {
+  console.log(req.files);
   try {
     if (!req.files || !req.files.imageFile || !req.files.bookFile) {
       return res
@@ -188,7 +189,7 @@ const deleteBook = async (req, res) => {
 };
 
 
-const editBook = async (req, res) => {
+/* const editBook = async (req, res) => {
   try {
     const { id } = req.params;
     const updates = { ...req.body };
@@ -239,6 +240,35 @@ const editBook = async (req, res) => {
       updatedBook,
     });
   } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+}; */
+
+const editBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+    const book = await Book.findById(id);
+
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    // Ensure `req.files` is properly accessed
+    if (req.files) {
+      if (req.files.imageFile && req.files.imageFile.length > 0) {
+        updates.imagePath = req.files.imageFile[0].path;
+      }
+      if (req.files.bookFile && req.files.bookFile.length > 0) {
+        updates.filePath = req.files.bookFile[0].path;
+      }
+    }
+
+    const updatedBook = await Book.findByIdAndUpdate(id, updates, { new: true });
+
+    res.status(200).json({ message: "Book updated successfully", updatedBook });
+  } catch (error) {
+    console.error("Error updating book:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

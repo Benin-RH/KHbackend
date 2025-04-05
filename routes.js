@@ -7,6 +7,7 @@ const Book=require('./Book/bookController')
 const favouriteBook=require('./Favourite/FavouriteController')
 const lentedBook=require('./Lent/lentBookController')
 const rating = require('./Ratings/ratingsController')
+const message=require('./Messages/messageController')
 
 /* staff */
 Router.post("/staffRegistration", staff.staffRegistration);
@@ -44,6 +45,8 @@ Router.post('/returnBook',lentedBook.returnBook)
 Router.post('/bookRating',rating.createRating)
 Router.post('/ratedUsers/:id',rating.getRatedUsers)
 
+/* Message */
+Router.post('/sendMessage',message.sendMessage)
 
 module.exports=Router
 

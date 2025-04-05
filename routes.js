@@ -6,6 +6,7 @@ const student=require('./Student/studentController')
 const Book=require('./Book/bookController')
 const favouriteBook=require('./Favourite/FavouriteController')
 const lentedBook=require('./Lent/lentBookController')
+const rating = require('./Ratings/ratingsController')
 
 /* staff */
 Router.post("/staffRegistration", staff.staffRegistration);
@@ -38,6 +39,11 @@ Router.post('/removeFavouriteBook',favouriteBook.removeFavouriteBook)
 Router.post('/lentedBook',lentedBook.lendBook)
 Router.post('/lentedBook/:userId',lentedBook.getLentedBookByUser)
 Router.post('/returnBook',lentedBook.returnBook)
+
+/* Rating */
+Router.post('/bookRating',rating.createRating)
+Router.post('/ratedUsers/:id',rating.getRatedUsers)
+
 
 module.exports=Router
 

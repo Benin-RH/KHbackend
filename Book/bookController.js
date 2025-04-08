@@ -35,11 +35,6 @@ const upload = multer({ storage }).fields([
   { name: "image", maxCount: 1 },
   { name: "file", maxCount: 1 },
 ]);
-/* const upload = multer({
-  storage,
-  fileFilter,
-  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB max file size
-}); */
 
 const getAllBooks = async (req, res) => {
   try {

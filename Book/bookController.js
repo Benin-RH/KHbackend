@@ -193,10 +193,6 @@ const editBook = async (req, res) => {
       return res.status(404).json({ message: "Book not found" });
     }
 
-    console.log("Existing book:", book);
-    console.log("Incoming updates:", req.body);
-    console.log("Received files:", req.files);
-
     const updates = { ...req.body };
 
     // Handle Image Upload

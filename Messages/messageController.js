@@ -13,7 +13,7 @@ const sendMessage = async (req, res) => {
     await newMessage.save();
 
     return res.status(201).json({
-      message: "Contact message sent successfully",
+      message: "message sent successfully",
       data: newMessage,
     });
   } catch (error) {

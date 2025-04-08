@@ -11,6 +11,8 @@ const student=require('./Student/studentController')
 const Book=require('./Book/bookController')
 const favouriteBook=require('./Favourite/FavouriteController')
 const lentedBook=require('./Lent/lentBookController')
+const rating = require('./Ratings/ratingsController')
+const message=require('./Messages/messageController')
 const { upload } = require("./Book/bookController");
 
 /* staff */
@@ -46,6 +48,13 @@ Router.post('/removeFavouriteBook',favouriteBook.removeFavouriteBook)
 Router.post('/lentedBook',lentedBook.lendBook)
 Router.post('/lentedBook/:userId',lentedBook.getLentedBookByUser)
 Router.post('/returnBook',lentedBook.returnBook)
+
+/* Rating */
+Router.post('/bookRating',rating.createRating)
+Router.post('/ratedUsers/:id',rating.getRatedUsers)
+
+/* Message */
+Router.post('/sendMessage',message.sendMessage)
 
 module.exports=Router
 

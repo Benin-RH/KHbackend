@@ -32,8 +32,8 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage }).fields([
-  { name: "imageFile", maxCount: 1 },
-  { name: "bookFile", maxCount: 1 },
+  { name: "image", maxCount: 1 },
+  { name: "file", maxCount: 1 },
 ]);
 
 const getAllBooks = async (req, res) => {
@@ -237,10 +237,7 @@ const editBook = async (req, res) => {
       return res.status(500).json({ message: "Failed to update book" });
     }
 
-    res.status(200).json({
-      message: "Book updated successfully",
-      updatedBook,
-    });
+    res.status(200).json({ message: "Book updated successfully", updatedBook });
   } catch (error) {
     console.error("Error updating book:", error);
     res.status(500).json({ message: "Server error", error: error.message });

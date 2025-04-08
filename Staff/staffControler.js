@@ -1,13 +1,13 @@
 const staffschema = require('./staffschema');
 
 const staffRegistration = (req, res) => {
-  let { Name, Email:email, Password, Contact } = req.body;
+  let { Name, Email: email, Password, Contact } = req.body;
 
-  let pass = Password.toString().split("").length;  
+  let pass = Password.toString().split("").length;
   if (!Name || !email || !Password || !Contact) {
     return res.status(400).json({ message: "All fields are required." });
   }
-  if(!/^\S+@\S+\.\S+$/.test(email)){
+  if (!/^\S+@\S+\.\S+$/.test(email)) {
     return res.status(400).json({ message: "Enter Valid Email Address" });
   }
   staffschema.findOne({ email })
@@ -51,15 +51,31 @@ const staffRegistration = (req, res) => {
     });
 };
 
+
+const getAllUsers = (req, res) => {
+  staffschema.find()
+    .then((staffs) => {
+      if (!staffs || staffs.length === 0) {
+        return res.status(404).json({ msg: "No staff found" });
+      }
+      res.status(200).json(staffs); // Send staff data as response
+    })
+    .catch((err) => {
+      console.error("Error fetching staff:", err);
+      res.status(500).json({ msg: "An error occurred while fetching staff" });
+    });
+};
+
+
 const staffLogin = (req, res) => {
-  const { Email:email, Password } = req.body; 
-  const pass = parseInt(Password);  
+  const { Email: email, Password } = req.body;
+  const pass = parseInt(Password);
 
   if (!email || !Password) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  if(!/^\S+@\S+\.\S+$/.test(email)){
+  if (!/^\S+@\S+\.\S+$/.test(email)) {
     return res.status(400).json({ message: "Enter Valid Email Address" });
   }
 
@@ -92,7 +108,7 @@ const staffLogin = (req, res) => {
 
 const staffCheckMail = (req, res) => {
   console.log(req.body);
-  
+
   const { email } = req.body;
   if (!email) {
     return res.status(400).json({
@@ -119,36 +135,36 @@ const staffCheckMail = (req, res) => {
     });
 };
 
-const setNewPassword=(req,res)=>{
-  const {email,password}=req.body
-  if(!password){
+const setNewPassword = (req, res) => {
+  const { email, password } = req.body
+  if (!password) {
     return res.status(400).json({
-      message:'Please Enter Your Password'
+      message: 'Please Enter Your Password'
     })
   }
-  const pass=password.toString().split('').length  
-  if(pass<6){
+  const pass = password.toString().split('').length
+  if (pass < 6) {
     return res.status(400).json({
-      message:'password length should be atleast 6'
+      message: 'password length should be atleast 6'
     })
   }
-  if(isNaN(password)){
+  if (isNaN(password)) {
     return res.status(400).json({
-      message:'password should be a number'
+      message: 'password should be a number'
     })
   }
-  staffschema.findOneAndUpdate({email,password})
-  .then((data)=>{
-    return res.status(200).json({
-      data:data,
-      message:"changed successfully"
+  staffschema.findOneAndUpdate({ email, password })
+    .then((data) => {
+      return res.status(200).json({
+        data: data,
+        message: "changed successfully"
+      })
     })
-  })
-  .catch((err)=>{
-    res.status(500).json({
-      messsge: "error occured",
-    });
-  })
+    .catch((err) => {
+      res.status(500).json({
+        messsge: "error occured",
+      });
+    })
 }
 
 const findStaff = (req, res) => {
@@ -185,5 +201,6 @@ module.exports = {
   staffLogin,
   staffCheckMail,
   setNewPassword,
-  findStaff
+  findStaff,
+  getAllUsers
 };

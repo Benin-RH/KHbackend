@@ -12,7 +12,6 @@ const Book=require('./Book/bookController')
 const favouriteBook=require('./Favourite/FavouriteController')
 const lentedBook=require('./Lent/lentBookController')
 
-const { upload } = require("./Book/bookController");
 const rating = require('./Ratings/ratingsController')
 const message=require('./Messages/messageController')
 const { upload } = require("./Book/bookController");

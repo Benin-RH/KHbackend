@@ -12,9 +12,9 @@ const Book=require('./Book/bookController')
 const favouriteBook=require('./Favourite/FavouriteController')
 const lentedBook=require('./Lent/lentBookController')
 
-const { upload } = require("./Book/bookController");
 const rating = require('./Ratings/ratingsController')
 const message=require('./Messages/messageController')
+const { upload } = require("./Book/bookController");
 
 
 /* staff */
@@ -40,7 +40,7 @@ Router.post('/addBook',Book.upload,Book.addBook)
 Router.get('/getAllBooks',Book.getAllBooks)
 Router.delete('/deleteBook/:id',Book.deleteBook)
 Router.post('/getBook/:id',Book.getBook)
-Router.put('/editBook/:bookId', upload, Book.editBook);
+Router.post('/editBook/:bookId', Book.upload, Book.editBook);
 /* fav book */
 Router.post('/addUserFavouriteBooks',favouriteBook.addUserFavouriteBooks)
 Router.post('/getAllUserFavouriteBooks',favouriteBook.getUserFavouriteBooks)

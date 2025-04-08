@@ -32,38 +32,41 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage }).fields([
-  { name: "imageFile", maxCount: 1 },
-  { name: "bookFile", maxCount: 1 },
+  { name: "image", maxCount: 1 },
+  { name: "file", maxCount: 1 },
 ]);
+/* const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB max file size
+}); */
 
-const getAllBooks= async(req,res)=>{
-  try{
-    const allBooks= await Book.find()
-    if(!allBooks){
+const getAllBooks = async (req, res) => {
+  try {
+    const allBooks = await Book.find();
+    if (!allBooks) {
       return res.status(400).json({
-        message:'Books Not Found'
-      })
+        message: "Books Not Found",
+      });
     }
     return res.status(201).json({
-      data:allBooks,
-      message:'Book Fetched successfully'
-    })
-  }
-  catch(err){
+      data: allBooks,
+      message: "Book Fetched successfully",
+    });
+  } catch (err) {
     console.log(err);
     return res.status(500).json({
-      message:'servor error'
-    })
+      message: "servor error",
+    });
   }
-}
+};
 
 const addBook = async (req, res) => {
-  console.log(req.files);
   try {
     if (!req.files || !req.files.imageFile || !req.files.bookFile) {
       return res
         .status(400)
-        .json({ message: "Both image and book file are required!" });
+        .json({ message: "Both image and book files are required!" });
     }
 
     const { bookName, authorName, description, category } = req.body;
@@ -109,11 +112,9 @@ const addBook = async (req, res) => {
       if (fs.existsSync(imageFullPath)) fs.unlinkSync(imageFullPath);
       if (fs.existsSync(fileFullPath)) fs.unlinkSync(fileFullPath);
 
-      return res
-        .status(400)
-        .json({
-          message: `${duplicateField} already exists! Please use a different one.`,
-        });
+      return res.status(400).json({
+        message: `${duplicateField} already exists! Please use a different one.`,
+      });
     }
 
     // Save book details in MongoDB
@@ -138,27 +139,27 @@ const addBook = async (req, res) => {
   }
 };
 
-const getBook=(req,res)=>{
-  const id=req.params.id
-  if(!id){
+const getBook = (req, res) => {
+  const id = req.params.id;
+  if (!id) {
     return res.status(400).json({
-      message:'id not found'
-    })
+      message: "id not found",
+    });
   }
   Book.findById(id)
-  .then((data)=>{
-    return res.status(201).json({
-      data,
-      message:'success'
+    .then((data) => {
+      return res.status(201).json({
+        data,
+        message: "success",
+      });
     })
-  })
-  .catch((err)=>{
-    console.log(err);
-    return res.status(500).json({
-      message:'Servor error'
-    })
-  })
-}
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).json({
+        message: "Servor error",
+      });
+    });
+};
 
 const deleteBook = async (req, res) => {
   try {
@@ -188,23 +189,25 @@ const deleteBook = async (req, res) => {
   }
 };
 
-
-/* const editBook = async (req, res) => {
+const editBook = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updates = { ...req.body };
-    const book = await Book.findById(id);
+    const { bookId } = req.params;
+    const book = await Book.findById(bookId);
 
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
 
+    console.log("Existing book:", book);
+    console.log("Incoming updates:", req.body);
     console.log("Received files:", req.files);
+
+    const updates = { ...req.body };
 
     // Handle Image Upload
     if (req.files?.image) {
-      const newImagePath = req.files.image[0].path; // Multer saves path
-      
+      const newImagePath = req.files.image[0].path;
+
       // Delete old image if it exists
       if (book.imagePath) {
         fs.unlink(path.join(__dirname, "..", book.imagePath), (err) => {
@@ -229,42 +232,15 @@ const deleteBook = async (req, res) => {
       updates.filePath = newFilePath;
     }
 
-    // Update book in database
-    const updatedBook = await Book.findByIdAndUpdate(id, updates, {
+    // Update book in the database
+    const updatedBook = await Book.findByIdAndUpdate(bookId, updates, {
       new: true,
       runValidators: true,
     });
 
-    res.status(200).json({
-      message: "Book updated successfully",
-      updatedBook,
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
-}; */
-
-const editBook = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const updates = req.body;
-    const book = await Book.findById(id);
-
-    if (!book) {
-      return res.status(404).json({ message: "Book not found" });
+    if (!updatedBook) {
+      return res.status(500).json({ message: "Failed to update book" });
     }
-
-    // Ensure `req.files` is properly accessed
-    if (req.files) {
-      if (req.files.imageFile && req.files.imageFile.length > 0) {
-        updates.imagePath = req.files.imageFile[0].path;
-      }
-      if (req.files.bookFile && req.files.bookFile.length > 0) {
-        updates.filePath = req.files.bookFile[0].path;
-      }
-    }
-
-    const updatedBook = await Book.findByIdAndUpdate(id, updates, { new: true });
 
     res.status(200).json({ message: "Book updated successfully", updatedBook });
   } catch (error) {
@@ -273,4 +249,11 @@ const editBook = async (req, res) => {
   }
 };
 
-module.exports = { upload, addBook, deleteBook,getAllBooks,getBook,editBook};
+module.exports = {
+  upload,
+  addBook,
+  deleteBook,
+  getAllBooks,
+  getBook,
+  editBook,
+};

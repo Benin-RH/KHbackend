@@ -3,7 +3,7 @@ const express=require("express");
 const Router=express.Router();
 const multer = require("multer");
 
-const upload = multer({ dest: "uploads/" });
+// /
 
 
 const staff=require('./Staff/staffControler')
@@ -11,6 +11,7 @@ const student=require('./Student/studentController')
 const Book=require('./Book/bookController')
 const favouriteBook=require('./Favourite/FavouriteController')
 const lentedBook=require('./Lent/lentBookController')
+const { upload } = require("./Book/bookController");
 
 /* staff */
 Router.post("/staffRegistration", staff.staffRegistration);
@@ -18,6 +19,7 @@ Router.post("/staffLogin", staff.staffLogin);
 Router.post("/staffCheckMail",staff.staffCheckMail);
 Router.post("/staffChangePassword",staff.setNewPassword);
 Router.post("/staff",staff.findStaff);
+Router.get("/getAllUsers",staff.getAllUsers);
 
 
 /* student */
@@ -26,6 +28,7 @@ Router.post("/studentLogin", student.studentLogin);
 Router.post("/student",student.findStudent);
 Router.post("/studentCheckMail",student.studentCheckMail);
 Router.post("/studentChangePassword",student.setNewPassword);
+Router.get("/getAllStudents",student.getAllStudents);
 
 
 /* Book */
@@ -33,8 +36,7 @@ Router.post('/addBook',Book.upload,Book.addBook)
 Router.get('/getAllBooks',Book.getAllBooks)
 Router.delete('/deleteBook/:id',Book.deleteBook)
 Router.post('/getBook/:id',Book.getBook)
-Router.post("/editBook/:id", upload.fields([{ name: "imageFile" }, { name: "bookFile" }]), Book.editBook);
-
+Router.put('/editBook/:bookId', upload, Book.editBook);
 /* fav book */
 Router.post('/addUserFavouriteBooks',favouriteBook.addUserFavouriteBooks)
 Router.post('/getAllUserFavouriteBooks',favouriteBook.getUserFavouriteBooks)

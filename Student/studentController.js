@@ -125,6 +125,7 @@ const studentCheckMail = (req, res) => {
 };
 
 const setNewPassword=(req,res)=>{
+  const{email,password}=req.body
   if(!password){
     return res.status(400).json({
       message:'Enter Your Password'
@@ -155,10 +156,30 @@ const setNewPassword=(req,res)=>{
   })
 }
 
+const getAllStudents=(req,res)=>{
+  studentSchema.find()
+  .then((student)=>{
+    if(!student||student.length===0){
+      return 
+      res.status(404).json({
+        msg:"no students found"
+      })
+    }
+    res.status(200).json(student)
+  })
+  .catch((err)=>{
+    console.log(err,"error in fetching students");
+    res.status(500).json({
+      msg:"an error accured while fetching students"
+    })
+  });
+};
+
 module.exports = {
   studentRegistration,
   studentLogin,
   findStudent,
   studentCheckMail,
-  setNewPassword
+  setNewPassword,
+  getAllStudents
 };

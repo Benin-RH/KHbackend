@@ -33,17 +33,16 @@ const addUserFavouriteBooks = async (req, res) => {
         .json({ message: "Invalid action. Use 'add' or 'remove'." });
     }
     await userFavorites.save();
-    if(action === 'add'){
+    if (action === "add") {
       return res.status(200).json({
-      message: "Book added to your Favourites",
-      favouriteBooks: userFavorites.bookIds,
-    });
-    }
-    else if(action === 'remove'){
+        message: "Book added to your Favourites",
+        favouriteBooks: userFavorites.bookIds,
+      });
+    } else if (action === "remove") {
       return res.status(200).json({
-      message: "Book removed from your Favourite",
-      favouriteBooks: userFavorites.bookIds,
-    });
+        message: "Book removed from your Favourite",
+        favouriteBooks: userFavorites.bookIds,
+      });
     }
   } catch (error) {
     console.error("Error updating favorite books:", error);
@@ -53,16 +52,14 @@ const addUserFavouriteBooks = async (req, res) => {
 
 const getUserFavouriteBooks = async (req, res) => {
   try {
-    const { userId, userType } = req.body;
+    const { userId } = req.body;
 
-    if (!userId || !userType) {
-      return res
-        .status(400)
-        .json({ message: "User ID and User Type are required." });
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required." });
     }
 
     const userFavorites = await favSchema
-      .findOne({ userId, userType })
+      .findOne({ userId })
       .populate("bookIds");
     if (!userFavorites) {
       return res
@@ -72,7 +69,7 @@ const getUserFavouriteBooks = async (req, res) => {
 
     return res.status(200).json({
       message: "User favorite books retrieved successfully.",
-      favouriteBooks: userFavorites.bookIds, 
+      favouriteBooks: userFavorites.bookIds,
     });
   } catch (error) {
     console.error("Error fetching favorite books:", error);
@@ -107,7 +104,6 @@ const removeFavouriteBook = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 module.exports = {
   addUserFavouriteBooks,

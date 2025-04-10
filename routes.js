@@ -45,6 +45,7 @@ Router.post('/editBook/:bookId', Book.upload, Book.editBook);
 Router.post('/addUserFavouriteBooks',favouriteBook.addUserFavouriteBooks)
 Router.post('/getAllUserFavouriteBooks',favouriteBook.getUserFavouriteBooks)
 Router.post('/removeFavouriteBook',favouriteBook.removeFavouriteBook)
+Router.post('/userFavouriteBooks',favouriteBook.getUserFavouriteBooks)
 
 /* lent book */
 Router.post('/lentedBook',lentedBook.lendBook)

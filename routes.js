@@ -45,7 +45,8 @@ Router.post('/editBook/:bookId', Book.upload, Book.editBook);
 Router.post('/addUserFavouriteBooks',favouriteBook.addUserFavouriteBooks)
 Router.post('/getAllUserFavouriteBooks',favouriteBook.getUserFavouriteBooks)
 Router.post('/removeFavouriteBook',favouriteBook.removeFavouriteBook)
-Router.post('/userFavouriteBooks',favouriteBook.getUserFavouriteBooks)
+Router.post('/staffFavouriteBooks',favouriteBook.getUserFavouriteBooks)
+Router.post('/studentFavouriteBooks',favouriteBook.getUserFavouriteBooks)
 
 /* lent book */
 Router.post('/lentedBook',lentedBook.lendBook)
@@ -58,6 +59,7 @@ Router.post('/ratedUsers/:id',rating.getRatedUsers)
 
 /* Message */
 Router.post('/sendMessage',message.sendMessage)
+Router.get('/getUserMessage/:id',message.getUserMessage)
 
 module.exports=Router
 

@@ -24,10 +24,35 @@ const sendMessage = async (req, res) => {
   }
 };
 
-const getUserMessage=()=>{
+const getUserMessage= async (req,res)=>{
 
-}
+ try{
+    const id=req.params.id;
+
+    if(!id){
+      return res.status(400).json({
+        error:"user id required"
+      })
+    }
+
+  const message = await messageSchema.find({userId:id})
+
+  if(!message){
+    return res.status(400).json({
+      error:"no message found"
+    })
+  }
+  res.status(200).json(message);
+ }catch{
+  res.status(500).json({
+    error:"something went wrong"
+  })
+ }
+
+
+};
 
 module.exports = {
   sendMessage,
+  getUserMessage
 };

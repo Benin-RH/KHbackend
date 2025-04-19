@@ -24,6 +24,7 @@ Router.post("/staffCheckMail",staff.staffCheckMail);
 Router.post("/staffChangePassword",staff.setNewPassword);
 Router.post("/staff",staff.findStaff);
 Router.get("/getAllUsers",staff.getAllUsers);
+Router.get("/updateStaffDetails",staff.updateStaffDetails);
 
 
 /* student */

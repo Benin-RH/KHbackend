@@ -7,7 +7,7 @@ const bookSchema = new mongoose.Schema(
       required: true,
       trim: true,
       unique: true,
-      collation: { locale: "en", strength: 2 }, // Case-insensitive uniqueness
+      collation: { locale: "en", strength: 2 },
     },
     authorName: {
       type: String,
@@ -24,14 +24,14 @@ const bookSchema = new mongoose.Schema(
       required: true,
     },
     imagePath: {
-      type: String, // Ensure this is a string for unique indexing
+      type: String,
       required: true,
-      unique: true, // Keep only this, remove schema.index()
+      unique: true, 
     },
     filePath: {
-      type: String, // Ensure this is a string for unique indexing
+      type: String, 
       required: true,
-      unique: true, // Keep only this, remove schema.index()
+      unique: true,
     },
     ratings: { type: Number, default: 0 },
     borrowed: { type: String, default: false },

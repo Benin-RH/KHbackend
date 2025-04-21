@@ -25,3 +25,4 @@ app.use("/", routes);
 app.listen(port, () => {
   console.log(`App is running at http://localhost:${port}`);
 });
+

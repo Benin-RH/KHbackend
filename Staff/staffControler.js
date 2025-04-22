@@ -194,7 +194,11 @@ const findStaff = (req, res) => {
     });
 };
 
-
+const updateStaffDetails=(req,res)=>{
+  const updates={...req.body}
+  console.log(updates);
+  
+}
 
 module.exports = {
   staffRegistration,
@@ -202,5 +206,6 @@ module.exports = {
   staffCheckMail,
   setNewPassword,
   findStaff,
-  getAllUsers
+  getAllUsers,
+  updateStaffDetails
 };

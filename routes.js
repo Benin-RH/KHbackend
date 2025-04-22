@@ -59,7 +59,8 @@ Router.post('/ratedUsers/:id',rating.getRatedUsers)
 
 /* Message */
 Router.post('/sendMessage',message.sendMessage)
-Router.get('/getUserMessage/:id',message.getUserMessage)
+Router.get('/getStaffMessage/:id',message.getUserMessage)
+Router.get('/getStudentMessage/:id',message.getUserMessage)
 
 module.exports=Router
 
